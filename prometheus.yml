@@ -1,0 +1,44 @@
+global:
+  scrape_interval: 5s
+  evaluation_interval: 5s
+
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets: []
+
+rule_files:
+  # Add alert rules here if needed
+
+scrape_configs:
+  # Scrape OpenTelemetry Collector metrics
+  - job_name: 'otel-collector'
+    static_configs:
+      - targets: ['otel-collector:8889']
+
+  # Dynamic service discovery for applications
+  - job_name: 'nodejs-services'
+    file_sd_configs:
+      - files:
+        - '/etc/prometheus/targets/*.yml'
+    relabel_configs:
+      - source_labels: [__address__]
+        regex: (.*)
+        target_label: instance
+        replacement: '$1'
+
+  # Optional: Prometheus itself
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+
+
+
+
+
+
+
+
+
+
+

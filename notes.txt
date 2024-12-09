@@ -1,0 +1,3 @@
+# reset admin password
+grafana-cli admin reset-admin-password nileshkumar
+
